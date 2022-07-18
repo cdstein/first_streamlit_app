@@ -19,7 +19,7 @@ streamlit.header('Fruity Vice Fruit Advice')
 fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
 streamlit.write('The user entered ', fruit_choice)
 import requests
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
+fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
 # streamlit.text(fruityvice_response.json()) #Just writes the data to a screen
 # Normalizes the data into discrete columns and rows by key value pairs
 fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
