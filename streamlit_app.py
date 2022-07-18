@@ -1,4 +1,8 @@
 import streamlit
+#import pandas
+import requests
+import snowflake.connector
+from urllib.error import URLError
 streamlit.title('My Parents New Healthy Diner')
 streamlit.header('Breakfast Menu')
 streamlit.text('🥣 Omega 3 and Blueberry Oatmeal')
@@ -6,7 +10,6 @@ streamlit.text('🥗 Kale, Spinach, and Rocket Smoothie')
 streamlit.text('🐔 Hard-Boiled Free Range Egg')
 streamlit.text('🥑🍞 Avacado Toast')
 streamlit.text(' 🍌🥭 Build Your Own Fruit Smoothie 🍌🥭')
-import pandas
 my_fruit_list = pandas.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
 my_fruit_list = my_fruit_list.set_index('Fruit')
 # Lets put a picklist here so the customer can pick the fruit they want to use
@@ -18,14 +21,14 @@ streamlit.dataframe(fruits_to_show)
 streamlit.header('Fruity Vice Fruit Advice')
 fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
 streamlit.write('The user entered ', fruit_choice)
-import requests
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
 # streamlit.text(fruityvice_response.json()) #Just writes the data to a screen
 # Normalizes the data into discrete columns and rows by key value pairs
 fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
 # Put's the normalized data into a web table
 streamlit.dataframe(fruityvice_normalized)
-import snowflake.connector
+#Don't run anything past here while we troubleshoot
+streamlit.stop()
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
 my_cur.execute("SELECT * from FRUIT_LOAD_LIST")
